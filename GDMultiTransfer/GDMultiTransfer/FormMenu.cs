@@ -16,48 +16,20 @@ namespace GDMultiTransfer
     {
         private string pathTransferCur;
         private string pathTransferGame = "";
-        private string dir = Directory.GetCurrentDirectory();
-        private string dirSaves = "Saves";
         private string pathSaves;
-        private string dirEmpty = "Empty";
-        private string pathEmpty;
         private string fileEmpty;
 
-        public FormMenu()
+        public FormMenu(string gameTransferPath, string savePath, string emptyFile)
         {
             InitializeComponent();
             this.Text = "GDMultiTransfer";
-            pathSaves = AddOrGetDirectory(dirSaves);
-            pathEmpty = AddOrGetDirectory(dirEmpty);
-            fileEmpty = pathEmpty + "\\" + "empty.gst";
-        }
-
-        string AddOrGetDirectory(string name)
-        {
-            if (!Directory.Exists(name)) Directory.CreateDirectory(dir + "\\" + name);
-            return dir + "\\" + name;
-        }
-
-        string GetGameTransfer()
-        {
-            using (var ofd = new OpenFileDialog())
-            {
-                ofd.Title = "Find game transfer.gst";
-                var result = ofd.ShowDialog();
-                return ofd.FileName;
-            }
+            pathTransferGame = gameTransferPath;
+            pathSaves = savePath;
+            fileEmpty = emptyFile;
         }
 
         private void FormMenu_Load(object sender, EventArgs e)
         {
-            var transfer = GetGameTransfer();
-            if (string.IsNullOrWhiteSpace(transfer) || !transfer.Contains(".gst"))
-            {
-                MessageBox.Show("File did not have .gst extension", "Wrong file!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
-            }
-
-            pathTransferGame = transfer;
             UpdateTransferCombobox();
         }
 
